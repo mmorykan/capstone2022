@@ -3,11 +3,11 @@ import sys
 import dotenv
 import redis
 import time
-from redis_check import is_redis_available
-from search_iterator import SearchIterator
-from regulations_api import RegulationsAPI
-from data_storage import DataStorage
-from job_queue import JobQueue
+from mirrcore.redis_check import is_redis_available
+from mirrgen.search_iterator import SearchIterator
+from mirrcore.regulations_api import RegulationsAPI
+from mirrcore.data_storage import DataStorage
+from mirrcore.job_queue import JobQueue
 
 
 class WorkGenerator:

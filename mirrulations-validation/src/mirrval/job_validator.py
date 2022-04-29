@@ -36,7 +36,7 @@ class WorkGenerator:
 def generate_work(collection=None):
     dotenv.load_dotenv()
 
-    database = redis.Redis()
+    database = redis.Redis('redis')
     # Sleep for 30 seconds to give time to load
     while not is_redis_available(database):
         print("Redis database is busy loading")

@@ -33,3 +33,6 @@ class DataStorage:
                     self.attachments.insert_one(data)
         self.attachments.insert_one(data)
 
+
+    def get_collection_size(self, collection):
+        return self.__getattribute__(collection).count_documents({})

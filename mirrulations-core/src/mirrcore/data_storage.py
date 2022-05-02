@@ -27,12 +27,18 @@ class DataStorage:
                 self.comments.insert_one(data)
 
     def add_attachment(self, data):
-        if 'attachments_text' in data.keys():
-            for attachment_text in data['data']['attachments_text']:
-                    data = {'id':data['data']['id'], 'text':attachment_text}
-                    self.attachments.insert_one(data)
-        self.attachments.insert_one(data)
+        # if 'attachments_text' in data.keys():
+        #     for attachment_text in data['data']['attachments_text']:
+        #             data = {'id':data['data']['id'], 'text':attachment_text}
+        #             self.attachments.insert_one(data)
+        agency = data['agency']
+        reg_id = data['reg_id']
+        path = agency + '/' + reg_id
+        for file in data['results']:
+            entry = {'path': path, 'file': file}
+            self.attachments.insert_one(entry)
 
 
     def get_collection_size(self, collection):
         return self.__getattribute__(collection).count_documents({})
+

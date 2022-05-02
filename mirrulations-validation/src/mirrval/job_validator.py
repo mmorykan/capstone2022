@@ -56,7 +56,9 @@ def generate_work(collection=None):
         generator.download(collection)
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] in ('dockets', 'documents', 'comments'):
-        generate_work(sys.argv[1])
-    else:
-        generate_work()
+    while True:
+        if len(sys.argv) > 1 and sys.argv[1] in ('dockets', 'documents', 'comments'):
+            generate_work(sys.argv[1])
+        else:
+            generate_work()
+        time.sleep(60*60*24*30)

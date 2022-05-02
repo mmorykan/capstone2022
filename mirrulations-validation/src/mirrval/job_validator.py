@@ -10,7 +10,7 @@ from mirrcore.data_storage import DataStorage
 from mirrcore.job_queue import JobQueue
 
 
-class WorkGenerator:
+class Validator:
 
     def __init__(self, api, datastorage, job_queue):
         self.api = api
@@ -47,7 +47,7 @@ def generate_work(collection=None):
     api = RegulationsAPI(api_key)
     storage = DataStorage()
     job_queue = JobQueue(database)
-    generator = WorkGenerator(api, storage, job_queue)
+    generator = Validator(api, storage, job_queue)
 
     if not collection:
         generator.download('dockets')

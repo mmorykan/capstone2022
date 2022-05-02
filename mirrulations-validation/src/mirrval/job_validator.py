@@ -59,7 +59,9 @@ def generate_work(collection=None):
 
 if __name__ == '__main__':
     job_types = ('dockets', 'documents', 'comments')
-    if len(sys.argv) > 1 and sys.argv[1] in job_types:
-        generate_work(sys.argv[1])
-    else:
-        generate_work()
+    while True:
+        if len(sys.argv) > 1 and sys.argv[1] in job_types:
+            generate_work(sys.argv[1])
+        else:
+            generate_work()
+        time.sleep(60*60*24*30)

@@ -1,10 +1,10 @@
 import os
 import sys
+import time
 import dotenv
 import redis
-import time
-from mirrcore.redis_check import is_redis_available
 from mirrgen.search_iterator import SearchIterator
+from mirrcore.redis_check import is_redis_available
 from mirrcore.regulations_api import RegulationsAPI
 from mirrcore.data_storage import DataStorage
 from mirrcore.job_queue import JobQueue
@@ -24,10 +24,10 @@ class WorkGenerator:
         for result in SearchIterator(self.api, endpoint, beginning_timestamp):
             if result == {}:
                 continue
-            for r in result['data']:
-                if not self.datastorage.exists(r):
-                    print(r['id'])
-                    self.job_queue.add_job(r['links']['self'], r['type'])
+            for res in result['data']:
+                if not self.datastorage.exists(res):
+                    print(res['id'])
+                    self.job_queue.add_job(res['links']['self'], res['type'])
                 counter += 1
             percentage = (counter / collection_size) * 100
             print(f'{percentage:.2f}%')
@@ -42,7 +42,8 @@ def generate_work(collection=None):
         print("Redis database is busy loading")
         time.sleep(30)
 
-    api_key = os.getenv((collection.upper() if collection else 'DOCKETS') + '_API_KEY')
+    api_prefix = collection.upper() if collection else 'DOCKETS'
+    api_key = os.getenv(api_prefix + '_API_KEY')
     api = RegulationsAPI(api_key)
     storage = DataStorage()
     job_queue = JobQueue(database)
@@ -55,8 +56,10 @@ def generate_work(collection=None):
     else:
         generator.download(collection)
 
+
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] in ('dockets', 'documents', 'comments'):
+    job_types = ('dockets', 'documents', 'comments')
+    if len(sys.argv) > 1 and sys.argv[1] in job_types:
         generate_work(sys.argv[1])
     else:
         generate_work()
